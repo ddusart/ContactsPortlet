@@ -43,9 +43,27 @@
 
 
     <c:forEach items="${contact.phoneNumbers}" var="phoneNumber">
-        <img style="vertical-align:middle" src="${pageContext.request.contextPath}/images/telephone.png" height="16" width="16" alt="<spring:message code="contact.telephone.title"/>" title="<spring:message code="contact.telephone.title"/>"/> 
-        ${ phoneNumber.displayType }: <a href="tel:${ phoneNumber.phoneNumber }">${ phoneNumber.phoneNumber }</a>
-        <br /> 
+        <img style="vertical-align:middle" src="${pageContext.request.contextPath}/images/telephone.png" height="16" width="16" alt="<spring:message code="contact.telephone.title"/>" title="<spring:message code="contact.telephone.title"/>"/>           
+      
+        <b><i>${ phoneNumber.displayType }:</i></b>
+        
+        <c:set var="tels" value="${fn:split(phoneNumber.phoneNumber, ',')}" />
+      	<ul>   
+                    
+        <c:forEach items="${tels }"var="tel">
+        	<li>
+		        <c:if test="${fn:startsWith(tel, 'p')}">
+		        	<i><spring:message code="contact.telephone.internal"/></i>${ fn:substring(tel,1,5) }
+		       	</c:if>
+		       	<c:if test="${fn:startsWith(tel, ' p')}">
+		        	<i><spring:message code="contact.telephone.internal"/></i>${ fn:substring(tel,2,6) }
+		       	</c:if>
+		       	<c:if test="${!fn:contains(tel, 'p')}">
+		         ${ tel }         	
+		        </c:if>
+	         </li>
+        </c:forEach>
+        </ul>
     </c:forEach>
 
     <c:forEach items="${contact.emailAddresses}" var="emailAddress">

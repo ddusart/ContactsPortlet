@@ -153,7 +153,13 @@ public class ConfigurableContactAttributesMapper implements AttributesMapper {
 
     private String getValue(Attribute attribute) throws javax.naming.NamingException {
         if(attribute != null) {
-            String value = (String)attribute.get();
+        	String value ="";
+        	if(attribute.size()==1) value = (String) attribute.get();
+        	else{
+        		value = (String) attribute.get(0);
+        		for(int i=1;i<attribute.size();i++)
+        			value = value + ", " + (String)attribute.get(i);
+        	}
             if(value != null && !value.equalsIgnoreCase("empty")) {
                 return value;
             }
