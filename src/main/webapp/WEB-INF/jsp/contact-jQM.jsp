@@ -83,10 +83,15 @@
 	
 	<div class="jqm-contact-action-grid">
 		<div class="grid-left">
-			<a href="tel:${ contact.primaryPhoneNumber.phoneNumber }" class="jqm-button">Call</a>
+			<c:set var="tels" value="${fn:split(contact.primaryPhoneNumber.phoneNumber, ',')}" />
+			<c:forEach items="${tels }" var="tel">
+				<c:if test="${!fn:startsWith(tel, 'p')}">
+					<a href="tel:${fn:substringAfter(tel,'+')}" class="jqm-button"><spring:message code="contact.call"/></a>
+				</c:if>
+			</c:forEach>
 		</div>
 		<div class="grid-right">
-			<a href="mailto:<c:out value="${ contact.primaryEmailAddress.emailAddress }"/>" class="jqm-button">Email</a>
+			<a href="mailto:<c:out value="${ contact.primaryEmailAddress.emailAddress }"/>" class="jqm-button"><spring:message code="contact.email"/></a>
 		</div>
 		<div class="clear"></div>
 	</div>
